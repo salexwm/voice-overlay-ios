@@ -98,7 +98,7 @@ public typealias SpeechErrorHandler = (Error?) -> Void
     }
     
     let node = audioEngine.inputNode
-    let recordingFormat = node.outputFormat(forBus: 0)
+    let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
     
     speechRequest = SFSpeechAudioBufferRecognitionRequest()
     
