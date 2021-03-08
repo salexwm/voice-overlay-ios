@@ -60,7 +60,11 @@ public typealias RecordableHandler = () -> Recordable
   @objc public func dismiss() {
     self.inputViewController?.dismiss(animated: true, completion: nil)
   }
-
+    
+    @objc public func stopReconrding() {
+      self.inputViewController?.stopRecording()
+    }
+    
   fileprivate func checkPermissionsAndRedirectToCorrectScreen(_ view: UIViewController) {
 
     let permissionStatuses = permissionControllers.map(\.status)

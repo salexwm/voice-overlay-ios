@@ -114,6 +114,14 @@ class InputViewController: UIViewController {
     }
   }
   
+    func stopRecording() {
+        isRecording = false
+        speechController?.stopRecording()
+        dismissMe(animated: false) {
+          self.dismissHandler?(false)
+        }
+    }
+    
   func toggleRecording(_ recordingButton: RecordingButton, dismiss: Bool = true) {
     isRecording = !isRecording
     recordingButton.animate(isRecording)
