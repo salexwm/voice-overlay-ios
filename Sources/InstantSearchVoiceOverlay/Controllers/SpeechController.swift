@@ -99,9 +99,11 @@ public typealias SpeechErrorHandler = (Error?) -> Void
     }
     
     let node = audioEngine.inputNode
-    let recordingFormat = AVAudioFormat()//standardFormatWithSampleRate: 44100, channels: 1
-    //recordingFormat.sampleRate = AudioKit.deviceSampleRate
     
+    
+    let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: node.inputFormat(forBus: 0).sampleRate, channels: 1)//standardFormatWithSampleRate: 44100, channels: 1
+    //recordingFormat.sampleRate = AudioKit.deviceSampleRate
+
     speechRequest = SFSpeechAudioBufferRecognitionRequest()
     
     node.installTap(onBus: 0,
