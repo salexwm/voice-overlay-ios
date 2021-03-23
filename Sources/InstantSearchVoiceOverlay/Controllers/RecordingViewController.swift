@@ -219,10 +219,12 @@ class InputViewController: UIViewController {
 //  }
   
   func handleVoiceError(_ error: Error?) {
-    titleLabel.text = constants.titleError
-    subtitleLabel.text = constants.subtitleError
-    subtitleBulletLabel.attributedText = nil
-    tryAgainLabel.text = constants.errorHint
-    toggleRecording(recordingButton, dismiss: false)
+    DispatchQueue.main.async {
+        self.titleLabel.text = self.constants.titleError
+        self.subtitleLabel.text = self.constants.subtitleError
+        self.subtitleBulletLabel.attributedText = nil
+        self.tryAgainLabel.text = self.constants.errorHint
+        self.toggleRecording(self.recordingButton, dismiss: false)
+    }
   }
 }
