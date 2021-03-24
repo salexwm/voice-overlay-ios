@@ -80,7 +80,7 @@ public typealias RecordableHandler = () -> Recordable
   }
 
   fileprivate func showPermissionScreen(_ view: UIViewController) {
-    permissionViewController.permissionControllers = permissionControllers.filter { $0.status == .undetermined }.reverse()
+    permissionViewController.permissionControllers = permissionControllers.reversed().filter { $0.status == .undetermined }
     permissionViewController.constants = settings.layout.permissionScreen
     DispatchQueue.main.async {
       view.present(self.permissionViewController, animated: true)
