@@ -90,43 +90,44 @@ public typealias SpeechErrorHandler = (Error?) -> Void
   
   private func record(textHandler: @escaping SpeechTextHandler, errorHandler: @escaping SpeechErrorHandler) {
     
-    do{
+    do {
       try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .duckOthers)
       try AVAudioSession.sharedInstance().setActive(true)
-    }
-    catch{
+    } catch {
       print(error.localizedDescription)
     }
     
     let node = audioEngine.inputNode
     
-    
-    let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: node.inputFormat(forBus: 0).sampleRate, channels: 1)//standardFormatWithSampleRate: 44100, channels: 1
-    //recordingFormat.sampleRate = AudioKit.deviceSampleRate
-
-    speechRequest = SFSpeechAudioBufferRecognitionRequest()
-    
-    node.installTap(onBus: 0,
-                    bufferSize: SpeechController.AUDIO_BUFFER_SIZE,
-                    format: recordingFormat) { [weak self] (buffer, _) in
-                      self?.speechRequest?.append(buffer)
-    }
-    audioEngine.prepare()
     do {
+        let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: node.inputFormat(forBus: 0).sampleRate, channels: 1)
+        //standardFormatWithSampleRate: 44100, channels: 1
+        //recordingFormat.sampleRate = AudioKit.deviceSampleRate
+
+        speechRequest = SFSpeechAudioBufferRecognitionRequest()
+        
+        node.installTap(onBus: 0,
+                        bufferSize: SpeechController.AUDIO_BUFFER_SIZE,
+                        format: recordingFormat) { [weak self] (buffer, _) in
+                          self?.speechRequest?.append(buffer)
+        }
+        audioEngine.prepare()
+    
       try audioEngine.start()
     } catch let err {
       errorHandler(err)
       return
     }
-    
-    speechTask = speechRecognizer.recognitionTask(with: speechRequest!) { (result, error) in
-      if let r = result {
-        let transcription = r.bestTranscription
-        let isFinal = r.isFinal
-        textHandler(transcription.formattedString, isFinal, nil)
-      } else {
-        errorHandler(error)
-      }
+    if let request = speechRequest {
+        speechTask = speechRecognizer.recognitionTask(with: request) { (result, error) in
+          if let r = result {
+            let transcription = r.bestTranscription
+            let isFinal = r.isFinal
+            textHandler(transcription.formattedString, isFinal, nil)
+          } else {
+            errorHandler(error)
+          }
+        }
     }
   }
   
