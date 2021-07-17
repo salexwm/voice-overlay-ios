@@ -91,8 +91,9 @@ public typealias SpeechErrorHandler = (Error?) -> Void
   private func record(textHandler: @escaping SpeechTextHandler, errorHandler: @escaping SpeechErrorHandler) {
     
     do {
-      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .duckOthers)
-      try AVAudioSession.sharedInstance().setActive(true)
+      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
+      try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+        
     } catch {
       print(error.localizedDescription)
     }
