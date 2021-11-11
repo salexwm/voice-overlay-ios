@@ -101,10 +101,10 @@ public typealias SpeechErrorHandler = (Error?) -> Void
     let node = audioEngine.inputNode
     
     do {
-        let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: node.inputFormat(forBus: 0).sampleRate, channels: 1)
-        //standardFormatWithSampleRate: 44100, channels: 1
-        //recordingFormat.sampleRate = AudioKit.deviceSampleRate
-
+        //let recordingFormat = node.outputFormat(forBus: 0)
+        // https://github.com/algolia/voice-overlay-ios/issues/32
+        let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
+        
         speechRequest = SFSpeechAudioBufferRecognitionRequest()
         
         node.installTap(onBus: 0,
