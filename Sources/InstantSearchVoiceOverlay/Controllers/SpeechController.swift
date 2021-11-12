@@ -103,16 +103,16 @@ public typealias SpeechErrorHandler = (Error?) -> Void
     do {
         //let recordingFormat = node.outputFormat(forBus: 0)
         // https://github.com/algolia/voice-overlay-ios/issues/32
-        let recordingFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
+        let recordingFormat = try AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
         
-        speechRequest = SFSpeechAudioBufferRecognitionRequest()
+        speechRequest = try SFSpeechAudioBufferRecognitionRequest()
         
         node.installTap(onBus: 0,
                         bufferSize: SpeechController.AUDIO_BUFFER_SIZE,
                         format: recordingFormat) { [weak self] (buffer, _) in
                           self?.speechRequest?.append(buffer)
         }
-        audioEngine.prepare()
+        try audioEngine.prepare()
     
       try audioEngine.start()
     } catch let err {
